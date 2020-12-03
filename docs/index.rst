@@ -12,7 +12,7 @@ Welcome to Wenet's documentation!
    
    ./test.md
 
-Wenet is an end-to-end ASR toolkit.
+Wenet is an tansformer-based end-to-end ASR toolkit.
 
 
 Indices and tables
