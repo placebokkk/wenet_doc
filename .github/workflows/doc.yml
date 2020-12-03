@@ -7,25 +7,23 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-
-    # check out sources that will be used for autodocs, plus readme
     - uses: actions/checkout@v1
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        docs-folder: "docs/"
 
     # didn't need to change anything here, but had to add sphinx.ext.githubpages
     # to my conf.py extensions list. that fixes the broken uploads
-    - name: Building documentation
+    - name: copy the generated site
       run: |
-        pip install sphinx Pallets-Sphinx-Themes
-        sphinx-build doc public -b dirhtml
-
+        mkdir public
+        cp -r docs/_build/html/* public/
+ 
     # still need to build and set the PAT to get a rebuild on the pages job,
     # apart from that quite clean and nice 
     - name: github pages deploy
       uses: peaceiris/actions-gh-pages@v2.3.1
       env:
-        PERSONAL_TOKEN: ${{ secrets.PAT }}
+        PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
         PUBLISH_BRANCH: gh-pages
         PUBLISH_DIR: public
-
-
-  
