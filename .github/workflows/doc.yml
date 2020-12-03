@@ -1,4 +1,4 @@
-name: "Docs Check and Publish"
+name: "Check and Publish Docs"
 on:
   push:
     branches:
@@ -11,19 +11,14 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     
-    # need to install sphinx related package
+    # install sphinx related package and build sphinx files
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
         pre-build-command: "pip install sphinx-markdown-tables nbsphinx recommonmark sphinx_rtd_theme"
     
-    # check the packages info
-    - name: list pip packages
-      run: |
-        pip list
 
-    # didn't need to change anything here, but had to add sphinx.ext.githubpages
-    # to my conf.py extensions list. that fixes the broken uploads
+    # add .nojekyll to notice Pages use the _* dirs
     - name: copy the generated site
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       run: |
@@ -31,8 +26,7 @@ jobs:
         touch public/.nojekyll
         cp -r docs/_build/html/* public/
    
-    # still need to build and set the PAT to get a rebuild on the pages job,
-    # apart from that quite clean and nice 
+    # Push to gh-pages branch
     - name: github pages deploy
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       uses: peaceiris/actions-gh-pages@v2.3.1
