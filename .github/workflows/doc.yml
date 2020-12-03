@@ -1,0 +1,29 @@
+name: "Pull Request Docs Check"
+on: 
+- pull_request
+- push
+  
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: ammaraskar/sphinx-action@master
+      with:
+        docs-folder: "docs/"
+
+    # didn't need to change anything here, but had to add sphinx.ext.githubpages
+    # to my conf.py extensions list. that fixes the broken uploads
+    - name: copy the generated site
+      run: |
+        mkdir public
+        cp -r docs/_build/html/* public/
+ 
+    # still need to build and set the PAT to get a rebuild on the pages job,
+    # apart from that quite clean and nice 
+    - name: github pages deploy
+      uses: peaceiris/actions-gh-pages@v2.3.1
+      env:
+        PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: public
