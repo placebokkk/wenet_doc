@@ -10,6 +10,7 @@ Welcome to Wenet's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+Wenet is an end-to-end speech processing toolkit.
 
 
 Indices and tables
