@@ -28,10 +28,45 @@ author = 'wenet-team'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    "nbsphinx",
+    "sphinx.ext.autodoc",
+    'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
+    "sphinx.ext.mathjax",
+    "sphinx.ext.todo",
+    #"sphinxarg.ext",
+    "sphinx_markdown_tables",
+    'recommonmark',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+# The suffix(es) of source filenames.
+# You can specify multiple suffix as a list of string:
+#
+# source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
+
+# enable to markdown
+from recommonmark.parser import CommonMarkParser
+
+source_parsers = {
+    '.md': CommonMarkParser,
+}
+
+# AutoStructify setting ref: https://qiita.com/pashango2/items/d1b379b699af85b529ce
+from recommonmark.transform import AutoStructify
+
+github_doc_root = 'https://github.com/rtfd/recommonmark/tree/master/doc/'
+
+
+def setup(app):
+    app.add_config_value('recommonmark_config', {
+        'url_resolver': lambda url: github_doc_root + url,
+        'auto_toc_tree_section': 'Contents',
+    }, True)
+    app.add_transform(AutoStructify)
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

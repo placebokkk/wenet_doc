@@ -7,8 +7,10 @@ Welcome to Wenet's documentation!
 =================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: Tutorial:
+   
+   ./test.md
 
 Wenet is an end-to-end ASR toolkit.
 
