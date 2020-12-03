@@ -1,6 +1,9 @@
-name: "Pull Request Docs Check"
-on: 
-- pull_request
+name: "Docs Check and Publish"
+on:
+  push:
+    branches:
+    - main
+  pull_request:
   
 jobs:
   docs:
@@ -13,7 +16,8 @@ jobs:
       with:
         docs-folder: "docs/"
         pre-build-command: "pip install sphinx-markdown-tables nbsphinx recommonmark sphinx_rtd_theme"
-        
+    
+    # check the packages info
     - name: list pip packages
       run: |
         pip list
@@ -21,14 +25,16 @@ jobs:
     # didn't need to change anything here, but had to add sphinx.ext.githubpages
     # to my conf.py extensions list. that fixes the broken uploads
     - name: copy the generated site
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       run: |
         mkdir public
         touch public/.nojekyll
         cp -r docs/_build/html/* public/
- 
+   
     # still need to build and set the PAT to get a rebuild on the pages job,
     # apart from that quite clean and nice 
     - name: github pages deploy
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       uses: peaceiris/actions-gh-pages@v2.3.1
       env:
         PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
