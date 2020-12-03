@@ -13,7 +13,7 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
-        pre-build-command: "pip install sphinx-markdown-tables nbsphinx recommonmark"
+        pre-build-command: "pip install sphinx-markdown-tables nbsphinx recommonmark sphinx_rtd_theme"
         
     - name: list pip packages
       run: |
