@@ -17,6 +17,7 @@ jobs:
     - name: copy the generated site
       run: |
         mkdir public
+        touch public/.nojekyll
         cp -r docs/_build/html/* public/
  
     # still need to build and set the PAT to get a rebuild on the pages job,
